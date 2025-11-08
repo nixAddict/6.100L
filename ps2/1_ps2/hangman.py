@@ -116,6 +116,20 @@ def get_help_letter(secret_word, available_letters):
     return revealed_letter
 
 
+def unique_letters_count(secret_word):
+    """
+    secret_word: string, the lowercase word the user is guessing
+
+    returns: int, the number of unique letters in secret_word
+    """
+    unique_letters = ""
+    for letter in secret_word:
+        if letter not in unique_letters:
+            unique_letters += letter
+
+    return len(unique_letters)
+
+
 
 def hangman(secret_word, with_help):
     """
@@ -166,6 +180,17 @@ def hangman(secret_word, with_help):
 
     while True:
         print("--------------")
+
+        if has_player_won(secret_word, letters_guessed):
+            total_score = (guesses_remaining + 4 * unique_letters_count(secret_word)) + (3 * len(secret_word))
+            print("Congratulations, you won!")
+            print(f"Your total score for this game is: {total_score}")
+            break
+
+        if guesses_remaining <= 0:
+            print(f"Sorry, you ran out of guesses. The word was {secret_word}.")
+            break
+
         print(f"You have {guesses_remaining} guesses left.")
         available_letters = get_available_letters(letters_guessed)
         print(f"Available letters: {available_letters}")
@@ -208,9 +233,8 @@ def hangman(secret_word, with_help):
 if __name__ == "__main__":
     # To test your game, uncomment the following three lines.
 
-    # secret_word = choose_word(wordlist)
-    secret_word = "tact"
-    with_help = False
+    secret_word = choose_word(wordlist)
+    with_help = True
     hangman(secret_word, with_help)
 
     # After you complete with_help functionality, change with_help to True
