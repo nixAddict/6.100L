@@ -29,6 +29,15 @@ def load_file(filename):
     return line.lower()
 
 
+def get_all_words(dict1, dict2):
+    """Returns list of all unique words from both dicts"""
+    all_words = list(dict1.keys())
+    for word in dict2:
+        if word not in dict1:
+            all_words.append(word)
+    return all_words
+
+
 ### Problem 0: Prep Data ###
 def text_to_list(input_text):
     """
@@ -100,14 +109,7 @@ def calculate_similarity_score(freq_dict1, freq_dict2):
          all frequencies in both dict1 and dict2.
         Return 1-(DIFF/ALL) rounded to 2 decimal places
     """
-    word_list = []
-    for word in freq_dict1:
-        if word not in word_list:
-            word_list.append(word)
-    for word in freq_dict2:
-        if word not in word_list:
-            word_list.append(word)
-
+    word_list = get_all_words(freq_dict1, freq_dict2)
     diff = 0
     all = 0
     for word in word_list:
@@ -145,13 +147,7 @@ def get_most_frequent_words(freq_dict1, freq_dict2):
     If multiple words are tied (i.e. share the same highest frequency),
     return an alphabetically ordered list of all these words.
     """
-    word_list = []
-    for word in freq_dict1:
-        if word not in word_list:
-            word_list.append(word)
-    for word in freq_dict2:
-        if word not in word_list:
-            word_list.append(word)
+    word_list = get_all_words(freq_dict1, freq_dict2)
     
     freq_dict = {}
     for word in word_list:
@@ -183,10 +179,7 @@ def get_tf(file_path):
     * Think about how we can use get_frequencies from earlier
     """
     input = text_to_list(load_file(file_path))
-    freq = {}
-    for i in input:
-        freq[i] = freq[i] + 1 if i in freq else 1
-    
+    freq = get_frequencies(input)
     total_words = len(input)
     tf = {}
     for word in freq:
@@ -205,7 +198,25 @@ def get_idf(file_paths):
     with math.log10()
 
     """
-    pass
+    input = []
+    word_list = []
+    for file_path in file_paths:
+        file_content = text_to_list(load_file(file_path))
+        for word in file_content:
+            if word not in word_list:
+                word_list.append(word)
+        input.append(file_content)
+
+    idf = {}
+    total_docs = len(file_paths)
+    for word in word_list:
+        count = 0
+        for i in input:
+            if word in i:
+                count += 1
+        idf[word] = math.log10(total_docs / count)
+    
+    return idf
 
 def get_tfidf(tf_file_path, idf_file_paths):
     """
@@ -220,7 +231,12 @@ def get_tfidf(tf_file_path, idf_file_paths):
 
         * TF-IDF(i) = TF(i) * IDF(i)
         """
-    pass
+    tf = get_tf(tf_file_path)
+    idf = get_idf(idf_file_paths)
+    tf_idf = {}
+    for k in tf:
+        tf_idf[k] = tf[k] * idf[k]
+    return sorted(tf_idf.items(), key=lambda x: (x[1], x[0]))
 
 
 if __name__ == "__main__":
