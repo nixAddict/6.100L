@@ -1,7 +1,7 @@
 # Problem Set 2, hangman.py
 # Name: Dang Trung An
 # Collaborators: None
-# Time spent:
+# Time spent: 1:00
 
 import random
 import string
