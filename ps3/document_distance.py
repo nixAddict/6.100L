@@ -162,12 +162,12 @@ def get_most_frequent_words(freq_dict1, freq_dict2):
             freq_dict[word] += freq_dict2[word]
     
     max_freq = max(freq_dict.values())
-    most_frequent_words = []
+    most_frequent = []
     for word in freq_dict:     
         if freq_dict[word] == max_freq:
-            most_frequent_words.append(word)
+            most_frequent.append(word)
 
-    return sorted(most_frequent_words)
+    return sorted(most_frequent)
 
 
 ### Problem 5: Finding TF-IDF ###
@@ -182,7 +182,16 @@ def get_tf(file_path):
         in the document) / (total number of words in the document)
     * Think about how we can use get_frequencies from earlier
     """
-    pass
+    input = text_to_list(load_file(file_path))
+    freq = {}
+    for i in input:
+        freq[i] = freq[i] + 1 if i in freq else 1
+    
+    total_words = len(input)
+    tf = {}
+    for word in freq:
+        tf[word] = freq[word] / total_words
+    return tf
 
 def get_idf(file_paths):
     """
