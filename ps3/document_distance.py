@@ -100,7 +100,28 @@ def calculate_similarity_score(freq_dict1, freq_dict2):
          all frequencies in both dict1 and dict2.
         Return 1-(DIFF/ALL) rounded to 2 decimal places
     """
-    pass
+    word_list = []
+    for word in freq_dict1:
+        if word not in word_list:
+            word_list.append(word)
+    for word in freq_dict2:
+        if word not in word_list:
+            word_list.append(word)
+
+    diff = 0
+    all = 0
+    for word in word_list:
+        if word in freq_dict1 and word in freq_dict2:
+            diff += abs(freq_dict1[word] - freq_dict2[word])
+            all += freq_dict1[word] + freq_dict2[word]
+        elif word not in freq_dict1:
+            diff += freq_dict2[word]
+            all += freq_dict2[word]
+        else:
+            diff += freq_dict1[word]
+            all += freq_dict1[word]
+    
+    return round(1 - (diff / all), 2)
 
 
 ### Problem 4: Most Frequent Word(s) ###
