@@ -171,7 +171,14 @@ def reveal_color_image(filename):
     Returns:
         result: an Image object containing the hidden image
     """
-    pass
+    pixels = img_to_pix(filename)
+    new_pixels = []
+    for pixel in pixels:
+        new_pixel = extract_end_bits(3, pixel)
+        new_pixels.append(tuple(int(i * 255 / 7) for i in new_pixel))
+    with Image.open(filename) as im:
+        revealed_im = pix_to_img(new_pixels, im.size, im.mode)
+    return revealed_im
 
 
 def reveal_image(filename):
@@ -231,11 +238,11 @@ def main():
     # im2.show()
 
     # Uncomment the following lines to test part 2
-    im = reveal_image('hidden1.bmp')
-    im.show()
+    # im = reveal_image('hidden1.bmp')
+    # im.show()
 
-    #im2 = reveal_image('hidden2.bmp')
-    # im2.show()
+    im2 = reveal_image('hidden2.bmp')
+    im2.show()
     
 
 if __name__ == '__main__':
