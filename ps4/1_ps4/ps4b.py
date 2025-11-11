@@ -1,6 +1,6 @@
 # Problem Set 4B
-# Name:
-# Collaborators:
+# Name: Dang Trung An
+# Collaborators: None
 
 import random
 
@@ -15,7 +15,7 @@ class Message(object):
         a Message object has one attribute:
             the message text
         '''
-        raise NotImplementedError  # delete this line and replace with your code here
+        self.text = input_text
 
     def __repr__(self):
         '''
@@ -32,7 +32,7 @@ class Message(object):
 
         Returns: (string) the message text
         '''
-        raise NotImplementedError  # delete this line and replace with your code here
+        return self.text
 
     def shift_char(self, char, shift):
         '''
@@ -44,7 +44,7 @@ class Message(object):
 
         Returns: (string) the shifted character with ASCII value in the range [32, 126]
         '''
-        raise NotImplementedError  # delete this line and replace with your code here
+        return chr(((ord(char) + shift - 32) % 95) + 32)
 
     def apply_pad(self, pad):
         '''
@@ -57,7 +57,11 @@ class Message(object):
 
         Returns: (string) The ciphertext produced using the one time pad
         '''
-        raise NotImplementedError  # delete this line and replace with your code here
+        text = self.get_text()
+        encrypted = ""
+        for i in range(len(pad)):
+            encrypted += self.shift_char(text[i], pad[i])
+        return encrypted
 
 
 class PlaintextMessage(Message):
