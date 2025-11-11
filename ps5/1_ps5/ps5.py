@@ -241,8 +241,8 @@ def main():
     # im = reveal_image('hidden1.bmp')
     # im.show()
 
-    im2 = reveal_image('hidden2.bmp')
-    im2.show()
+    # im2 = reveal_image('hidden2.bmp')
+    # im2.show()
     
 
 if __name__ == '__main__':
